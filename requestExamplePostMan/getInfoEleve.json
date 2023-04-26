@@ -1,0 +1,3 @@
+{
+    "query" : "{getInfoLoggedEleve{id_classe,nom,prenom,email,classe {nom}}}"
+}

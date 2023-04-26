@@ -1,0 +1,210 @@
+query getMatiere{
+  getMatiere {
+    id,
+    nom,
+    coef
+  }
+}
+
+
+
+query getClasse{
+  getClasse{
+    id,
+    nom,
+    eleve{
+      nom,
+      prenom
+    }
+    matiere_classe{
+      matiere{
+        nom
+      }
+    }
+  }
+}
+
+query getProfesseur{
+  getProfesseur{
+    id,
+    prenom,
+    email,
+    password,
+    matiere{
+      id,
+      nom,
+      coef
+    }
+  }
+}
+
+query getEleve{
+  getEleve{
+    id_classe,
+    nom,
+    prenom,
+    email,
+    classe {
+      nom
+    }
+    notes{
+      note,
+      matiere{
+        nom
+      }
+    },
+
+  }
+}
+
+query getCoursForClasse{
+  getCoursForClasse(id_classe: 1,debut: "2023-01-01 00:00:00", fin: "2023-01-07 19:00:00"){
+    id
+    debut
+    fin
+    matiere {
+      nom
+    }
+    professeur{
+      nom
+    }
+    classe{
+      nom
+    }
+    salle{
+      nom
+    }
+  }
+}
+
+query getCours{
+  getCours{
+    id
+    debut
+    fin
+    matiere {
+      nom
+    }
+    professeur{
+      nom
+    }
+    classe{
+      nom
+    }
+    salle{
+      nom
+    }
+  }
+}
+
+mutation createCours{
+  createCours(id_matiere: 1,id_salle: 1,id_classe: 1,id_professeur: 2,debut: "2023-04-01 08:00:00",fin: "2023-04-01 12:00:00"){
+    id
+    debut
+    fin
+    matiere {
+      nom
+    }
+    professeur{
+      nom
+    }
+    classe{
+      nom
+    }
+    salle{
+      nom
+    }
+  }
+}
+
+mutation createSalle{
+  createSalle(nom:"B02"){
+    id,
+    nom
+  }
+}
+
+mutation createNote{
+  createNotes(id_eleve: 1,id_matiere: 2,note: 9){
+    note,
+    eleve{
+      id,
+      nom
+    }
+    matiere{
+      id,
+      nom
+    }
+  }
+}
+
+
+mutation createEleve{
+  createEleve(id_classe: 1,nom: "tatatax",prenom: "pre_tatatax",email: "tatatax@email.com",password: "tatatatax"){
+    id_classe,
+    nom,
+    prenom,
+    email,
+    password,
+    classe {
+      nom
+    }
+  }
+}
+
+mutation createMatiereClasse{
+  createMatiereClasse(id_classe: 1,id_matiere: 3){
+    classe {
+      nom
+    }
+    matiere{
+      nom
+    }
+  }
+}
+
+mutation createClasse{
+  createClasse(nom: "G2"){
+    id,
+    nom
+  }
+}
+
+mutation createProfesseur{
+  createProfesseur(id_matiere: 1,nom: "tutu",prenom: "pre_titi",email: "titi@email.com",password: "titi"){
+    id,
+    prenom,
+    email,
+    password,
+    matiere{
+      id,
+      nom,
+      coef
+    }
+  }
+}
+
+
+mutation createMatiere{
+  createMatiere(nom: "français", coef: 2){
+    nom,
+    coef
+  }
+}
+
+mutation updateMatiere{
+  updateMatiere(id: 2, nom: "françaisssrrrss"){
+    id,
+    nom,
+    coef
+  }
+}
+
+mutation deleteMatiere{
+  	deleteMatiere(id: 2){
+        id,
+        nom,
+        coef
+  	}
+}
+

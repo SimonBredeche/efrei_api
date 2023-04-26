@@ -1,0 +1,3 @@
+{
+    "query" : "{getInfoLoggedProfesseur{id,nom,prenom,email,matiere {nom}}}"
+}

@@ -1,0 +1,3 @@
+{
+    "query" : "{loginProfesseur(email: \"titi@email.com\",password: \"titi\")}"
+}

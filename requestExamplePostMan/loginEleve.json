@@ -1,0 +1,3 @@
+{
+    "query" : "{loginEleve(email: \"tata@email.com\",password: \"tata\")}"
+}

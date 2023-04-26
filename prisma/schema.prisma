@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model classe {
+  id             Int              @id @default(autoincrement())
+  nom            String?          @db.VarChar(255)
+  deleted        Boolean          @default(false)
+  cours          cours[]
+  eleve          eleve[]
+  matiere_classe matiere_classe[]
+}
+
+model eleve {
+  id        Int     @id @default(autoincrement())
+  id_classe Int?
+  nom       String? @db.VarChar(255)
+  prenom    String? @db.VarChar(255)
+  email     String? @unique(map: "email") @db.VarChar(255)
+  password  String? @db.VarChar(255)
+  deleted   Boolean @default(false)
+  classe    classe? @relation(fields: [id_classe], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "eleve_ibfk_1")
+  notes     notes[]
+
+  @@index([id_classe], map: "id_classe")
+}
+
+model matiere {
+  id             Int              @id @default(autoincrement())
+  nom            String?          @db.VarChar(255)
+  coef           Int?
+  deleted        Boolean          @default(false)
+  cours          cours[]
+  matiere_classe matiere_classe[]
+  notes          notes[]
+  professeur     professeur[]
+}
+
+model matiere_classe {
+  id         Int      @id @default(autoincrement())
+  id_classe  Int?
+  id_matiere Int?
+  deleted    Boolean  @default(false)
+  classe     classe?  @relation(fields: [id_classe], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "matiere_classe_ibfk_1")
+  matiere    matiere? @relation(fields: [id_matiere], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "matiere_classe_ibfk_2")
+
+  @@index([id_classe], map: "id_classe")
+  @@index([id_matiere], map: "id_matiere")
+}
+
+model notes {
+  id         Int      @id @default(autoincrement())
+  id_eleve   Int?
+  id_matiere Int?
+  note       Int?
+  deleted    Boolean  @default(false)
+  eleve      eleve?   @relation(fields: [id_eleve], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notes_ibfk_1")
+  matiere    matiere? @relation(fields: [id_matiere], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notes_ibfk_2")
+
+  @@index([id_eleve], map: "id_eleve")
+  @@index([id_matiere], map: "id_matiere")
+}
+
+model professeur {
+  id         Int      @id @default(autoincrement())
+  id_matiere Int?
+  nom        String?  @db.VarChar(255)
+  prenom     String?  @db.VarChar(255)
+  email      String?  @unique(map: "email") @db.VarChar(255)
+  password   String?  @db.VarChar(255)
+  deleted    Boolean  @default(false)
+  cours      cours[]
+  matiere    matiere? @relation(fields: [id_matiere], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "professeur_ibfk_1")
+
+  @@index([id_matiere], map: "id_matiere")
+}
+
+model cours {
+  id            Int         @id @default(autoincrement())
+  id_matiere    Int?
+  id_salle      Int?
+  id_classe     Int?
+  id_professeur Int?
+  debut         DateTime?   @db.DateTime(0)
+  fin           DateTime?   @db.DateTime(0)
+  deleted       Boolean     @default(false)
+  salle         salle?      @relation(fields: [id_salle], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cours_ibfk_1")
+  matiere       matiere?    @relation(fields: [id_matiere], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cours_ibfk_2")
+  classe        classe?     @relation(fields: [id_classe], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cours_ibfk_3")
+  professeur    professeur? @relation(fields: [id_professeur], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cours_ibfk_4")
+
+  @@index([id_classe], map: "id_classe")
+  @@index([id_matiere], map: "id_matiere")
+  @@index([id_professeur], map: "id_professeur")
+  @@index([id_salle], map: "id_salle")
+}
+
+model salle {
+  id      Int     @id @default(autoincrement())
+  nom     String? @db.VarChar(255)
+  deleted Boolean @default(false)
+  cours   cours[]
+}
